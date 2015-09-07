@@ -8,6 +8,7 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE"
         classpath 'com.ofg:uptodate-gradle-plugin:1.5.1'
         classpath "io.codearte.accurest:accurest-gradle-plugin:$accurestVersion"
+        classpath 'org.ajoberstar:gradle-git:0.12.0'
     }
 }
 
@@ -153,3 +154,12 @@ publishing {
 String getProp(String propName) {
     return hasProperty(propName) ? (getProperty(propName) ?: System.properties[propName]) : System.properties[propName]
 }
+
+task addHashFile << {
+    ext.repo = org.ajoberstar.grgit.Grgit.open(project.file('.'))
+    File file = new File("git.properties")
+    file.delete()
+    file.withWriter { it << "git.commit=${repo.head().id}\ngit.branch=${repo.branch.current.name}" }
+}
+
+build.dependsOn('addHashFile')
