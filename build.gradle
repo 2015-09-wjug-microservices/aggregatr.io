@@ -158,8 +158,16 @@ String getProp(String propName) {
 task addHashFile << {
     ext.repo = org.ajoberstar.grgit.Grgit.open(project.file('.'))
     File file = new File("git.properties")
-    file.delete()
+    if( file.exists()) file.delete()
+    file.createNewFile()
     file.withWriter { it << "git.commit=${repo.head().id}\ngit.branch=${repo.branch.current.name}" }
 }
 
-build.dependsOn('addHashFile')
+jar {
+    dependsOn addHashFile
+    from "git.properties"
+}
+
+bootRepackage {
+    withJarTask = "jar"
+}
