@@ -46,15 +46,6 @@ class DojrzewatrUpdater {
     }
 
     private void notifyDojrzewatr(Ingredients ingredients) {
-        serviceRestClient.forService("dojrzewatr")
-                .retryUsing(retryExecutor)
-                .post()
-                .withCircuitBreaker(
-                        HystrixCommand.Setter.withGroupKey(asKey("dojrzewatr_notification")))
-                .onUrl("/brew")
-                .body(ingredients)
-                .withHeaders().contentType(Version.DOJRZEWATR_V1)
-                .andExecuteFor()
-                .ignoringResponseAsync();
+        // call dojrzewatr
     }
 }
