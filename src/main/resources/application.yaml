@@ -7,3 +7,6 @@ stubrunner:
   use-microservice-definitions: true
   stubs:
     repository.root: "http://nexus.wjug:8081/nexus/content/repositories/releases/"
+spring.sleuth.client.enabled: false
+
+spring.zipkin.host: apps.wjug
